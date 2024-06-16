@@ -1,0 +1,16 @@
+{
+  "name": "social-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:front\"",
+    "start:backend": "cd backend && nodemon",
+    "start:front": "cd front && npm run serve"
+  },
+  "author": "xyxyxyxy16@gmail.com",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

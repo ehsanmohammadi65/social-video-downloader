@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .button {
+    color: white;
+    background-color: #459d7a;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(69 157 122 / var(--tw-border-opacity));
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem /* 4px */;
+
+    text-decoration: none;
+  }
+
+  .button:visited {
+    color: #459d7a;
+    background-color: white;
+  }
+
+  .button:active {
+    color: #459d7a;
+    background-color: white;
+  }
+  .buttonReverse {
+    color: #459d7a;
+    background-color: white;
+    border-width: 1px;
+    --tw-border-opacity: 1;
+    border-color: rgb(69 157 122 / var(--tw-border-opacity));
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.25rem /* 4px */;
+
+    text-decoration: none;
+  }
+
+  .buttonReverse:visited {
+    color: white;
+    background-color: #459d7a;
+  }
+
+  .buttonReverse:active {
+    color: white;
+    background-color: #459d7a;
+  }
+  .text-mobile-sm {
+    font-size: 0.15rem;
+  }
+  .text-mini {
+    font-size: 0.5rem;
+  }
+  .border-mini {
+    border-width: 1px;
+  }
+  .h-65 {
+    height: 22rem;
+  }
+  .font-inter {
+    font-family: inter;
+  }
+  .dir-rtl {
+    direction: rtl;
+  }
+  .dir-ltr {
+    direction: ltr;
+  }
+  /* remove counter input number */
+  .remove-count::-webkit-outer-spin-button,
+  .remove-count::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
