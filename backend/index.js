@@ -21,7 +21,10 @@ async function downYoutube(videoUrl) {
     return { Error: err };
   }
 }
-app.use("/youtube", express.static(path.join(__dirname, "youtube/video")));
+app.use(
+  "/youtube",
+  express.static(path.join(__dirname + "/backend/youtube/video"))
+);
 app.post("/check", async (req, res) => {
   const url = req.body.url;
   if (!url) {
