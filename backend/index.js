@@ -12,9 +12,6 @@ async function downYoutube(videoUrl) {
     console.log(videoUrl);
     const output = await getYVideo(videoUrl);
     console.log(`Finished downloading all videos: ${output}`);
-    setTimeout(() => {
-      deleteDownloadedFiles(output);
-    }, 30 * 60 * 1000); // 30 دقیقه به میلی‌ثانیه تبدیل شده است
 
     return { videolink: output };
   } catch (err) {

@@ -3,26 +3,28 @@ const { SocksProxyAgent } = require("socks-proxy-agent");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
 const ffmpegPath = require("ffmpeg-static");
-const { format } = require("path");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-// const proxy = "socks://127.0.0.1:2080";
-// const agent = new SocksProxyAgent(proxy);
+const proxy = "socks://127.0.0.1:2080";
+const agent = new SocksProxyAgent(proxy);
 
 async function getYVideo(videoId) {
   let output = [];
 
   try {
     const info = await ytdl.getInfo(videoId);
-    //for proxy
+    //proxy
     // const info = await ytdl.getInfo(videoId, {
     //   requestOptions: { agent },
     // });
+
     const seenQualities = new Set();
 
     const listQuality = info.formats
-      .filter((format) => format.qualityLabel)
+      .filter(
+        (format) => format.qualityLabel && format.hasAudio && format.hasVideo
+      )
       .reduce((unique, format) => {
         if (!seenQualities.has(format.qualityLabel)) {
           seenQualities.add(format.qualityLabel);
@@ -30,90 +32,53 @@ async function getYVideo(videoId) {
             quality: format.qualityLabel,
             itag: format.itag,
             mimeType: format.mimeType,
+            format: format,
           });
         }
         return unique;
       }, []);
-    //console.log(listQuality);
-    const audioFormat = ytdl.chooseFormat(info.formats, {
-      quality: "highestaudio",
-    });
-    const videoFormats = listQuality.reduce((acc, obj) => {
-      acc[obj.quality.replace("p", "")] = ytdl.chooseFormat(info.formats, {
-        quality: obj.itag,
+
+    for (const quality of listQuality) {
+      const videoFilePath = `youtube/video/${info.videoDetails.title}_${quality.quality}.mp4`;
+
+      fs.mkdirSync("youtube/video", { recursive: true });
+
+      const videoStream = ytdl.downloadFromInfo(info, {
+        format: quality.format,
       });
-      return acc;
-    }, {});
-    //    console.log("vf", videoFormats);
-    const qualityLevels = listQuality.map((format) =>
-      format.quality.replace("p", "")
-    );
-    for (const quality of qualityLevels) {
-      const videoFormat = videoFormats[quality];
+      //proxy
+      // const videoStream = ytdl.downloadFromInfo(info, {
+      //   format: quality.format,
+      //   requestOptions: { agent },
+      // });
 
-      if (videoFormat) {
-        const videoFilePath = `youtube/video/${info.videoDetails.title}_${quality}.mp4`;
-        const audioFilePath = `youtube/audio/${info.videoDetails.title}_audio.mp4`;
-        const outputFilePath = `youtube/combined/${info.videoDetails.title}_${quality}_combined.mp4`;
+      const videoOutput = fs.createWriteStream(videoFilePath);
 
-        // ایجاد پوشه‌ها در صورت عدم وجود
-        fs.mkdirSync("youtube/video", { recursive: true });
-        fs.mkdirSync("youtube/audio", { recursive: true });
-        fs.mkdirSync("youtube/combined", { recursive: true });
+      let videoSize = 0;
+      let videoDownloaded = 0;
 
-        const videoStream = ytdl.downloadFromInfo(info, {
-          format: videoFormat,
+      videoStream.on("response", (res) => {
+        videoSize = parseInt(res.headers["content-length"], 10);
+      });
+
+      videoStream.on("data", (chunk) => {
+        videoDownloaded += chunk.length;
+        const percent = ((videoDownloaded / videoSize) * 100).toFixed(2);
+        console.log(
+          `Video download progress (${quality.quality}): ${percent}%`
+        );
+      });
+
+      videoStream.pipe(videoOutput);
+
+      await new Promise((resolve, reject) => {
+        videoOutput.on("finish", () => {
+          console.log(`Finished downloading: ${videoFilePath}`);
+          output.push(videoFilePath);
+          resolve();
         });
-        const audioStream = ytdl.downloadFromInfo(info, {
-          format: audioFormat,
-        });
-        //for proxy
-        // const videoStream = ytdl.downloadFromInfo(info, {
-        //   format: videoFormat,
-        //   requestOptions: { agent },
-        // });
-        // const audioStream = ytdl.downloadFromInfo(info, {
-        //   format: audioFormat,
-        //   requestOptions: { agent },
-        // });
-
-        const videoOutput = fs.createWriteStream(videoFilePath);
-        const audioOutput = fs.createWriteStream(audioFilePath);
-
-        videoStream.pipe(videoOutput);
-        audioStream.pipe(audioOutput);
-
-        await new Promise((resolve, reject) => {
-          videoOutput.on("finish", resolve);
-          videoOutput.on("error", reject);
-        });
-
-        await new Promise((resolve, reject) => {
-          audioOutput.on("finish", resolve);
-          audioOutput.on("error", reject);
-        });
-
-        await new Promise((resolve, reject) => {
-          ffmpeg()
-            .input(videoFilePath)
-            .input(audioFilePath)
-            .outputOptions("-c:v copy")
-            .outputOptions("-c:a aac")
-            .save(outputFilePath)
-            .on("end", () => {
-              console.log(`Finished combining: ${outputFilePath}`);
-              resolve();
-            })
-            .on("error", (err) => {
-              console.error(`Error combining ${outputFilePath}:`, err);
-              reject(err);
-            });
-        });
-
-        output.push(outputFilePath);
-      } else {
-        console.log(`Format not found for quality: ${quality}`);
-      }
+        videoOutput.on("error", reject);
+      });
     }
   } catch (err) {
     console.error("Error getting video info:", err);
@@ -121,7 +86,7 @@ async function getYVideo(videoId) {
 
   return output;
 }
-// تابع برای حذف فایل‌ها
+
 function deleteDownloadedFiles(filePaths) {
   for (const filePath of filePaths) {
     fs.unlink(filePath, (err) => {
