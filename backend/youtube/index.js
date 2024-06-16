@@ -13,11 +13,11 @@ async function getYVideo(videoId) {
   let output = [];
 
   try {
-    const info = await ytdl.getInfo(videoId);
+    // const info = await ytdl.getInfo(videoId);
     //proxy
-    // const info = await ytdl.getInfo(videoId, {
-    //   requestOptions: { agent },
-    // });
+    const info = await ytdl.getInfo(videoId, {
+      requestOptions: { agent },
+    });
 
     const seenQualities = new Set();
 
@@ -43,14 +43,14 @@ async function getYVideo(videoId) {
 
       fs.mkdirSync("youtube/video", { recursive: true });
 
-      const videoStream = ytdl.downloadFromInfo(info, {
-        format: quality.format,
-      });
-      //proxy
       // const videoStream = ytdl.downloadFromInfo(info, {
       //   format: quality.format,
-      //   requestOptions: { agent },
       // });
+      //proxy
+      const videoStream = ytdl.downloadFromInfo(info, {
+        format: quality.format,
+        requestOptions: { agent },
+      });
 
       const videoOutput = fs.createWriteStream(videoFilePath);
 
@@ -74,7 +74,7 @@ async function getYVideo(videoId) {
       await new Promise((resolve, reject) => {
         videoOutput.on("finish", () => {
           console.log(`Finished downloading: ${videoFilePath}`);
-          output.push(videoFilePath);
+          output.push({ download_url: videoFilePath, name: quality.quality });
           resolve();
         });
         videoOutput.on("error", reject);

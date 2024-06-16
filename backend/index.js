@@ -4,6 +4,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
+
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -19,6 +21,7 @@ async function downYoutube(videoUrl) {
     return { Error: err };
   }
 }
+app.use("/youtube", express.static(path.join(__dirname, "youtube/video")));
 app.post("/check", async (req, res) => {
   const url = req.body.url;
   if (!url) {

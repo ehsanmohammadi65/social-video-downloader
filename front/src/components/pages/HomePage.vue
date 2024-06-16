@@ -16,7 +16,16 @@
         Download Video
       </button>
     </div>
-    <div class="w-full">{{ newUrl }}</div>
+    <div class="w-full">
+      <div
+        class="button w-32 h-10 mt-5"
+        v-for="urln in newUrl"
+        :key="urln.name">
+        <a :href="'http://5.161.155.227:4000/' + urln.download_url"
+          >{{ urln.name }}
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
