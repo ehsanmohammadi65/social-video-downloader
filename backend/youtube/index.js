@@ -63,12 +63,19 @@ async function getYVideo(videoId) {
 
         const videoStream = ytdl.downloadFromInfo(info, {
           format: videoFormat,
-          requestOptions: { agent },
         });
         const audioStream = ytdl.downloadFromInfo(info, {
           format: audioFormat,
-          requestOptions: { agent },
         });
+        //for proxy
+        // const videoStream = ytdl.downloadFromInfo(info, {
+        //   format: videoFormat,
+        //   requestOptions: { agent },
+        // });
+        // const audioStream = ytdl.downloadFromInfo(info, {
+        //   format: audioFormat,
+        //   requestOptions: { agent },
+        // });
 
         const videoOutput = fs.createWriteStream(videoFilePath);
         const audioOutput = fs.createWriteStream(audioFilePath);
