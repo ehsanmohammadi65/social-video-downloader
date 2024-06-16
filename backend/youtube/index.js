@@ -7,16 +7,18 @@ const { format } = require("path");
 
 ffmpeg.setFfmpegPath(ffmpegPath);
 
-const proxy = "socks://127.0.0.1:2080";
-const agent = new SocksProxyAgent(proxy);
+// const proxy = "socks://127.0.0.1:2080";
+// const agent = new SocksProxyAgent(proxy);
 
 async function getYVideo(videoId) {
   let output = [];
 
   try {
-    const info = await ytdl.getInfo(videoId, {
-      requestOptions: { agent },
-    });
+    const info = await ytdl.getInfo(videoId);
+    //for proxy
+    // const info = await ytdl.getInfo(videoId, {
+    //   requestOptions: { agent },
+    // });
     const seenQualities = new Set();
 
     const listQuality = info.formats
