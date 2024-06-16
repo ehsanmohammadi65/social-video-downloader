@@ -28,7 +28,7 @@
   let url = ref("");
   const sendUrl = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/check", {
+      const response = await axios.post("http://5.161.155.227:4000/check", {
         url: url.value,
       });
 
