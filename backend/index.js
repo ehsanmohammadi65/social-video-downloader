@@ -1,5 +1,6 @@
 const { getYVideo, deleteDownloadedFiles } = require("./youtube/index.js");
 const { identifyWebsite } = require("./checkurl.js");
+const { getPostLinkInsta } = require("./instagram/index.js");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -19,6 +20,15 @@ async function downYoutube(videoUrl) {
   } catch (err) {
     console.error("Error:", err);
     return { Error: err };
+  }
+}
+async function downInstagram(videoUrl) {
+  try {
+    console.log(videoUrl);
+    const output = await getPostLinkInsta(videoUrl);
+    return { videolink: output };
+  } catch (err) {
+    console.log("ERRor Insta");
   }
 }
 app.use("/youtube/video/:filename", (req, res) => {
@@ -52,6 +62,10 @@ app.post("/check", async (req, res) => {
   const social = identifyWebsite(url);
   if (social === "YouTube") {
     const downloadResult = await downYoutube(url);
+    return res.json({ download_link: downloadResult });
+  } else if (social == "Instagram") {
+    const downloadResult = await downInstagram(url);
+
     return res.json({ download_link: downloadResult });
   } else {
     return res.json({ url: social });

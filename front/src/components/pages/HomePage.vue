@@ -1,29 +1,35 @@
 <template>
   <div class="w-full font-inter">
-    <div class="w-full">
-      <h2 class="text-[30px]">Welcome to Social Video Downloader</h2>
+    <div class="w-full mt-10">
+      <h2 class="md:text-[30px] text-[20px]">
+        Welcome to Social Video Downloader
+      </h2>
     </div>
     <div class="flex w-full items-center justify-center mt-10">
-      <label for="url" class="text-[20px] pe-3"> URL</label>
       <input
         type="text"
         name="url"
-        class="border h-10 w-[20rem] rounded me-3"
+        class="border h-10 md:w-[20rem] w-[15rem] rounded me-3 ms-2 md:ms-0"
         placeholder="URL: http://example.com"
         v-model="url" />
 
-      <button id="check" class="button w-32 h-10" @click="sendUrl">
-        Download Video
+      <button
+        id="check"
+        class="button md:w-32 h-10 text-[15px] md:text-[25px]"
+        @click="sendUrl">
+        Download
       </button>
     </div>
-    <div class="w-full">
-      <div
-        class="button w-32 h-10 mt-5"
-        v-for="urln in newUrl"
-        :key="urln.name">
-        <a :href="'http://5.161.155.227:4000/' + urln.download_url"
-          >{{ urln.name }}
-        </a>
+    <div class="w-full flex justify-center items-center text-center">
+      <div>
+        <div
+          class="button w-32 h-10 mt-5"
+          v-for="urln in newUrl"
+          :key="urln.name">
+          <a :href="'http://5.161.155.227:4000/' + urln.download_url"
+            >{{ urln.name }}
+          </a>
+        </div>
       </div>
     </div>
   </div>
