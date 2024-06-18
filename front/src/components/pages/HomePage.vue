@@ -38,7 +38,7 @@
               class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
               v-for="urln in newUrl"
               :key="urln.name">
-              <a :href="'http://localhost:4000/' + urln.download_url"
+              <a :href="'http://5.161.155.227:4000/' + urln.download_url"
                 >{{ urln.name }}
               </a>
             </div>
@@ -57,7 +57,7 @@
   let url = ref("");
   const sendUrl = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/check", {
+      const response = await axios.post("http://5.161.155.227:4000/check", {
         url: url.value,
       });
 
