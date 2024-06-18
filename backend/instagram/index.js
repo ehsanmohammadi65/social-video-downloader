@@ -41,12 +41,7 @@ async function getPostLinkInsta(instagramUrl) {
 
     // Return a promise that resolves when the writing is finished
     return new Promise((resolve, reject) => {
-      writer.on("finish", () =>
-        resolve({
-          download_url: videoFilename,
-          name: "DownloadVideo",
-        })
-      ); // Return the filename when done
+      writer.on("finish", () => resolve(videoFilename)); // Return the filename when done
       writer.on("error", reject);
     });
   } catch (error) {
