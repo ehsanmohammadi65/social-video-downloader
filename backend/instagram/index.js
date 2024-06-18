@@ -27,7 +27,7 @@ async function getPostLinkInsta(instagramUrl) {
       url: videoUrl,
       method: "GET",
       responseType: "stream",
-      httpsAgent: agent,
+      // httpsAgent: agent,
       timeout: 10000,
     });
 
