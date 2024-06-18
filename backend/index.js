@@ -1,6 +1,8 @@
 const { getYVideo, deleteDownloadedFiles } = require("./youtube/index.js");
 const { identifyWebsite } = require("./checkurl.js");
 const { getPostLinkInsta } = require("./instagram/index.js");
+const { deleteFile } = require("./deleteFile.js");
+const { downloadVideosFromLinkedIn } = require("./linkedin/index.js");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -25,16 +27,66 @@ async function downYoutube(videoUrl) {
 async function downInstagram(videoUrl) {
   try {
     console.log(videoUrl);
-    const output = await getPostLinkInsta(videoUrl);
+    const output = await getPostLinkInsta(videoUrl)
+      .then((link) => {
+        console.log(link);
+        return link;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return error;
+      });
     return { videolink: output };
   } catch (err) {
-    console.log("ERRor Insta");
+    console.log("Error Insta", err);
   }
 }
 app.use("/youtube/video/:filename", (req, res) => {
   console.log("ok");
   const filename = req.params.filename;
   const filePath = path.join(__dirname + "/youtube/video/", filename);
+
+  // بررسی وجود فایل قبل از دانلود
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`File not found: ${filePath}`);
+      return res.status(404).send("File not found");
+    }
+
+    // ارسال فایل برای دانلود
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error(`Error downloading file: ${err}`);
+        return res.status(500).send("Error downloading file");
+      }
+    });
+  });
+});
+app.use("/instagram/video/:filename", (req, res) => {
+  console.log("ok");
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname + "/instagram/video/", filename);
+
+  // بررسی وجود فایل قبل از دانلود
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      console.error(`File not found: ${filePath}`);
+      return res.status(404).send("File not found");
+    }
+
+    // ارسال فایل برای دانلود
+    res.download(filePath, (err) => {
+      if (err) {
+        console.error(`Error downloading file: ${err}`);
+        return res.status(500).send("Error downloading file");
+      }
+    });
+  });
+});
+app.use("/linkedin/video/:filename", (req, res) => {
+  console.log("ok");
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname + "/linkedin/video/", filename);
 
   // بررسی وجود فایل قبل از دانلود
   fs.access(filePath, fs.constants.F_OK, (err) => {
@@ -62,12 +114,39 @@ app.post("/check", async (req, res) => {
   const social = identifyWebsite(url);
   if (social === "YouTube") {
     const downloadResult = await downYoutube(url);
-    return res.json({ download_link: downloadResult });
-  } else if (social == "Instagram") {
-    const downloadResult = await downInstagram(url);
+    setTimeout(async () => {
+      await deleteFile(downloadResult.videolink);
+    }, 30 * 6 * 1000);
 
     return res.json({ download_link: downloadResult });
-  } else {
+  } else if (social === "Instagram") {
+    console.log("insta");
+
+    const downloadResult = await downInstagram(url);
+    setTimeout(async () => {
+      await deleteFile(downloadResult.videolink);
+    }, 30 * 6 * 1000);
+
+    return res.json({ download_link: downloadResult });
+  } else if (social === "LinkedIn") {
+    // Example usage:
+
+    const downloadResult = await downloadVideosFromLinkedIn(url)
+      .then((savedPaths) => {
+        console.log("All videos downloaded successfully.");
+        return savedPaths;
+      })
+      .catch((err) => {
+        console.error("Failed to download videos:", err);
+        return err;
+      });
+    setTimeout(async () => {
+      await deleteFile(downloadResult.videolink);
+    }, 30 * 6 * 1000);
+    console.warn({ download_link: downloadResult });
+    return res.json({ download_link: downloadResult });
+  } else if (social === "None of the specified sites") {
+    console.log("None of the specified sites");
     return res.json({ url: social });
   }
 });
