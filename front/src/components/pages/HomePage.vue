@@ -38,7 +38,7 @@
               class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
               v-for="urln in newUrl"
               :key="urln.name">
-              <a :href="'http://5.161.155.227:4000/' + urln.download_url"
+              <a :href="`${hostDomain}:4000/` + urln.download_url"
                 >{{ urln.name }}
               </a>
             </div>
@@ -52,12 +52,13 @@
 <script setup>
   import { ref } from "vue";
   import axios from "axios";
-
+  const hostDomain = process.env.VUE_APP_HOST_DOMAIN;
+  console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");
   const sendUrl = async () => {
     try {
-      const response = await axios.post("http://5.161.155.227:4000/check", {
+      const response = await axios.post(`${hostDomain}:4000/check`, {
         url: url.value,
       });
 

@@ -36,7 +36,7 @@ async function downInstagram(videoUrl) {
         console.error("Error:", error);
         return error;
       });
-    return { videolink: output };
+    return { output };
   } catch (err) {
     console.log("Error Insta", err);
   }
@@ -124,10 +124,10 @@ app.post("/check", async (req, res) => {
 
     const downloadResult = await downInstagram(url);
     setTimeout(async () => {
-      await deleteFile(downloadResult.videolink);
+      await deleteFile(downloadResult.output.videolink);
     }, 30 * 6 * 1000);
 
-    return res.json({ download_link: downloadResult });
+    return res.json({ download_link: downloadResult.output });
   } else if (social === "LinkedIn") {
     // Example usage:
 
