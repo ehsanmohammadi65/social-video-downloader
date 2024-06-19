@@ -77,9 +77,9 @@
           isLoading.value = false;
           return val;
         })
-        .catch(() => {
+        .catch((err) => {
           isLoading.value = false;
-          return val;
+          return err;
         });
 
       newUrl.value = response.data.download_link;
