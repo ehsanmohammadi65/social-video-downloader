@@ -16,6 +16,8 @@ function identifyWebsite(urlString) {
     return "Pinterest";
   } else if (hostname.includes("twitter.com")) {
     return "Twitter";
+  } else if (hostname.includes("tiktok.com")) {
+    return "TikTok";
   } else {
     return "None of the specified sites";
   }

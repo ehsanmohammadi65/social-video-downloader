@@ -3,6 +3,7 @@ const { identifyWebsite } = require("./checkurl.js");
 const { getPostLinkInsta } = require("./instagram/index.js");
 const { deleteFile } = require("./deleteFile.js");
 const { downloadVideosFromLinkedIn } = require("./linkedin/index.js");
+const { downloadVideosFromTikTok } = require("./tiktok/index.js");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -143,6 +144,21 @@ app.post("/check", async (req, res) => {
     setTimeout(async () => {
       await deleteFile(downloadResult.videolink);
     }, 30 * 6 * 1000);
+    console.warn({ download_link: downloadResult });
+    return res.json({ download_link: downloadResult });
+  } else if (social === "TikTok") {
+    // const downloadResult = await downloadVideosFromTikTok(url)
+    //   .then((savedPaths) => {
+    //     console.log("All videos downloaded successfully.");
+    //     return savedPaths;
+    //   })
+    //   .catch((err) => {
+    //     console.error("Failed to download videos:", err);
+    //     return err;
+    //   });
+    // setTimeout(async () => {
+    //   await deleteFile(downloadResult.videolink);
+    // }, 30 * 6 * 1000);
     console.warn({ download_link: downloadResult });
     return res.json({ download_link: downloadResult });
   } else if (social === "None of the specified sites") {

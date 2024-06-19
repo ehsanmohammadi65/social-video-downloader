@@ -1,5 +1,10 @@
 <template>
   <div class="w-full font-inter">
+    <loading
+      v-model:active="isLoading"
+      :can-cancel="true"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage" />
     <header class="w-full mt-10">
       <h2 class="md:text-[30px] text-[20px]">
         Welcome to Social Video Downloader
@@ -51,16 +56,29 @@
 
 <script setup>
   import { ref } from "vue";
+
+  import Loading from "vue-loading-overlay";
+  import "vue-loading-overlay/dist/css/index.css";
   import axios from "axios";
   const hostDomain = process.env.VUE_APP_HOST_DOMAIN;
   console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");
+  var isLoading = ref(false);
+  var fullPage = ref(true);
   const sendUrl = async () => {
     try {
-      const response = await axios.post(`${hostDomain}:4000/check`, {
-        url: url.value,
-      });
+      isLoading.value = true;
+      const response = await axios
+        .post(`${hostDomain}:4000/check`, {
+          url: url.value,
+        })
+        .then(() => {
+          isLoading.value = false;
+        })
+        .catch(() => {
+          isLoading.value = false;
+        });
 
       newUrl.value = response.data.download_link;
 
