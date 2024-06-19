@@ -73,11 +73,13 @@
         .post(`${hostDomain}:4000/check`, {
           url: url.value,
         })
-        .then(() => {
+        .then((val) => {
           isLoading.value = false;
+          return val;
         })
         .catch(() => {
           isLoading.value = false;
+          return val;
         });
 
       newUrl.value = response.data.download_link;
