@@ -12,7 +12,7 @@ async function downloadVideosFromTikTok(pageUrl) {
 
     // Send a GET request to the page URL
     const response = await axios.get(pageUrl, {
-      httpsAgent: agent,
+      //   httpsAgent: agent,
       timeout: 10000,
       responseType: "stream",
     });
@@ -73,7 +73,7 @@ async function downloadVideosFromTikTok(pageUrl) {
             url: videoUrl,
             method: "GET",
             responseType: "stream",
-            httpsAgent: agent,
+            // httpsAgent: agent,
 
             timeout: 10000,
           });
