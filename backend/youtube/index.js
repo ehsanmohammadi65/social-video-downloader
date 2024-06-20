@@ -13,9 +13,7 @@ async function getYVideo(videoId) {
   let output = [];
 
   try {
-    const info = await ytdl.getInfo(videoId, {
-      requestOptions: { agent },
-    });
+    const info = await ytdl.getInfo(videoId, {});
     //proxy
     // const info = await ytdl.getInfo(videoId, {
     //   requestOptions: { agent },
@@ -47,7 +45,6 @@ async function getYVideo(videoId) {
 
       const videoStream = ytdl.downloadFromInfo(info, {
         format: quality.format,
-        requestOptions: { agent },
       });
       //proxy
       // const videoStream = ytdl.downloadFromInfo(info, {
