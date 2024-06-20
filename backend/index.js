@@ -9,9 +9,9 @@ const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-const fs = require("fs");
 app.use(cors());
 app.use(bodyParser.json());
+var fs = require("fs");
 var http = require("http");
 var https = require("https");
 var privateKey = fs.readFileSync("./PrivateKey.key", "utf8");
@@ -175,5 +175,6 @@ app.post("/check", async (req, res) => {
   }
 });
 
-httpServer.listen(4000);
-httpsServer.listen(8449);
+app.listen(4000, () => {
+  console.log("Server is running on port 4000");
+});

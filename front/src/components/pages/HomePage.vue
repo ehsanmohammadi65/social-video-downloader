@@ -46,7 +46,7 @@
                 class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
                 v-for="urln in newUrl"
                 :key="urln.name">
-                <a :href="`${hostDomain}:8449/` + urln.download_url"
+                <a :href="`${hostDomain}:4000/` + urln.download_url"
                   >{{ urln.name }}
                 </a>
               </div>
@@ -75,7 +75,7 @@
     try {
       isLoading.value = true;
       const response = await axios
-        .post(`${hostDomain}:8449/check`, {
+        .post(`${hostDomain}:4000/check`, {
           url: url.value,
         })
         .then((val) => {
