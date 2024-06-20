@@ -114,12 +114,13 @@ app.post("/check", async (req, res) => {
 
   const social = identifyWebsite(url);
   if (social === "YouTube") {
+    console.log("youtube");
     const downloadResult = await downYoutube(url);
+    console.log("y", downloadResult);
     setTimeout(async () => {
       await deleteFile(downloadResult.videolink);
     }, 30 * 6 * 1000);
-
-    return res.json({ download_link: downloadResult.output });
+    return res.json({ download_link: downloadResult.videolink });
   } else if (social === "Instagram") {
     console.log("insta");
 

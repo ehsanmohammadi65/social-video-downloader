@@ -41,13 +41,15 @@
           <div
             class="flex justify-center items-center text-center w-full"
             v-if="btndownload">
-            <div
-              class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
-              v-for="urln in newUrl"
-              :key="urln.name">
-              <a :href="`${hostDomain}:4000/` + urln.download_url"
-                >{{ urln.name }}
-              </a>
+            <div>
+              <div
+                class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
+                v-for="urln in newUrl"
+                :key="urln.name">
+                <a :href="`${hostDomain}:4000/` + urln.download_url"
+                  >{{ urln.name }}
+                </a>
+              </div>
             </div>
           </div>
         </div>
