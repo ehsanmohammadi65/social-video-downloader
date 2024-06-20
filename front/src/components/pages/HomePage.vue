@@ -64,7 +64,7 @@
   import Loading from "vue-loading-overlay";
   import "vue-loading-overlay/dist/css/index.css";
   import axios from "axios";
-  const hostDomain = process.env.VUE_APP_HOST_DOMAIN;
+  const hostDomain = "http://5.161.155.227";
   console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");
