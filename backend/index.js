@@ -12,6 +12,14 @@ const path = require("path");
 const fs = require("fs");
 app.use(cors());
 app.use(bodyParser.json());
+var fs = require("fs");
+var http = require("http");
+var https = require("https");
+var privateKey = fs.readFileSync("./PrivateKey.key", "utf8");
+var certificate = fs.readFileSync("./Certificate.crt", "utf8");
+var credentials = { key: privateKey, cert: certificate };
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
 async function downYoutube(videoUrl) {
   try {
@@ -168,6 +176,5 @@ app.post("/check", async (req, res) => {
   }
 });
 
-app.listen(4000, () => {
-  console.log("Server is running on port 4000");
-});
+httpServer.listen(4000);
+httpsServer.listen(8443);

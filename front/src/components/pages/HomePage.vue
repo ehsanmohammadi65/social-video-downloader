@@ -46,7 +46,7 @@
                 class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
                 v-for="urln in newUrl"
                 :key="urln.name">
-                <a :href="`${hostDomain}:4000/` + urln.download_url"
+                <a :href="`${hostDomain}:8443/` + urln.download_url"
                   >{{ urln.name }}
                 </a>
               </div>
@@ -64,7 +64,7 @@
   import Loading from "vue-loading-overlay";
   import "vue-loading-overlay/dist/css/index.css";
   import axios from "axios";
-  const hostDomain = "http://5.161.155.227";
+  const hostDomain = "https://svdl.pro";
   console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");
@@ -75,7 +75,7 @@
     try {
       isLoading.value = true;
       const response = await axios
-        .post(`${hostDomain}:4000/check`, {
+        .post(`${hostDomain}:8443/check`, {
           url: url.value,
         })
         .then((val) => {
