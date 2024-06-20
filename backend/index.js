@@ -119,7 +119,7 @@ app.post("/check", async (req, res) => {
       await deleteFile(downloadResult.videolink);
     }, 30 * 6 * 1000);
 
-    return res.json({ download_link: downloadResult });
+    return res.json({ download_link: downloadResult.output });
   } else if (social === "Instagram") {
     console.log("insta");
 

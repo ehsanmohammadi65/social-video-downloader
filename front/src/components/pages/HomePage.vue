@@ -38,7 +38,9 @@
               All links will be deleted after 30 minutes
             </h4>
           </div>
-          <div class="flex justify-center items-center text-center w-full">
+          <div
+            class="flex justify-center items-center text-center w-full"
+            v-if="btndownload">
             <div
               class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
               v-for="urln in newUrl"
@@ -66,6 +68,7 @@
   let url = ref("");
   var isLoading = ref(false);
   var fullPage = ref(true);
+  var btndownload = ref(false);
   const sendUrl = async () => {
     try {
       isLoading.value = true;
@@ -75,10 +78,12 @@
         })
         .then((val) => {
           isLoading.value = false;
+          btndownload.value = true;
           return val;
         })
         .catch((err) => {
           isLoading.value = false;
+          btndownload.value = false;
           return err;
         });
 
