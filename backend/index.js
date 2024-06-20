@@ -12,7 +12,6 @@ const path = require("path");
 const fs = require("fs");
 app.use(cors());
 app.use(bodyParser.json());
-var fs = require("fs");
 var http = require("http");
 var https = require("https");
 var privateKey = fs.readFileSync("./PrivateKey.key", "utf8");
