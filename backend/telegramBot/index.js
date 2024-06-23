@@ -1,5 +1,9 @@
 const TelegramBot = require("node-telegram-bot-api");
-
+const { getYVideo, deleteDownloadedFiles } = require("../youtube/index.js");
+const { identifyWebsite } = require("../checkurl.js");
+const { getPostLinkInsta } = require("../instagram/index.js");
+const { deleteFile } = require("../deleteFile.js");
+const { downloadVideosFromLinkedIn } = require("../linkedin/index.js");
 //replace Robot Token
 const token = "xxxx";
 
@@ -17,7 +21,23 @@ const bot = new TelegramBot(token, {
 // });
 
 const userResponses = {};
-
+async function downInstagram(videoUrl) {
+  try {
+    console.log(videoUrl);
+    const output = await getPostLinkInsta(videoUrl)
+      .then((link) => {
+        console.log(link);
+        return link;
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        return error;
+      });
+    return { output };
+  } catch (err) {
+    console.log("Error Insta", err);
+  }
+}
 async function downYoutube(videoUrl) {
   try {
     console.log(videoUrl);
@@ -81,38 +101,14 @@ bot.on("message", async (msg) => {
       console.warn({ download_link: downloadResult });
       bot.sendMessage(chatId, "video download link:", downloadResult);
     } else if (messageText.includes("instagram.com")) {
-      return "Instagram";
-    } else if (messageText.includes("pinterest.com")) {
-      return "Pinterest";
-    } else if (messageText.includes("twitter.com")) {
-      return "Twitter";
-    } else if (messageText.includes("tiktok.com")) {
-      return "TikTok";
+      const downloadResult = await downInstagram(url);
+      setTimeout(async () => {
+        await deleteFile(downloadResult.output.videolink);
+      }, 30 * 6 * 1000);
+
+      bot.sendMessage(chatId, "video download link:", downloadResult.output);
     } else {
-      return "None of the specified sites";
+      bot.sendMessage(chatId, "None of the specified sites");
     }
   }
 });
-
-const handleResponse = (chatId, response) => {
-  const user = userResponses[chatId];
-  if (response === "back to Menu") {
-    delete userResponses[chatId];
-    const keyboard = {
-      reply_markup: {
-        keyboard: [
-          [{ text: "welcome" }],
-          [{ text: "category" }],
-          [{ text: " About US" }],
-        ],
-        resize_keyboard: true,
-        one_time_keyboard: true,
-      },
-    };
-    bot.sendMessage(chatId, "Back to main Menu", keyboard);
-  } else {
-    const questionType = questions[user.currentQuestion].type;
-    user.responses.push({ type: questionType, answer: response });
-    user.currentQuestion++;
-  }
-};
