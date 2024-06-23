@@ -5,6 +5,7 @@ const { deleteFile } = require("./deleteFile.js");
 const { downloadVideosFromLinkedIn } = require("./linkedin/index.js");
 const { downloadVideosFromTikTok } = require("./tiktok/index.js");
 const express = require("express");
+require("./telegramBot/index.js");
 const app = express();
 const bodyParser = require("body-parser");
 const cors = require("cors");
