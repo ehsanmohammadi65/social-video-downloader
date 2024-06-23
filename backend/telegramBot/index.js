@@ -78,14 +78,20 @@ bot.on("message", async (msg) => {
       messageText.includes("youtu.be")
     ) {
       console.log("youtube");
-      const downloadResult = await downYoutube(url);
+      const downloadResult = await downYoutube(messageText);
       setTimeout(async () => {
         await deleteFile(downloadResult.videolink);
       }, 30 * 6 * 1000);
-      bot.sendMessage(chatId, "video download link:", downloadResult.videolink);
+      downloadResult.videolink.forEach((el) => {
+        bot.sendMessage(
+          chatId,
+          "http://5.161.155.227:4000/" + el.download_url + ""
+        );
+      });
+
       //  return res.json({ download_link: downloadResult.videolink });
     } else if (messageText.includes("linkedin.com")) {
-      const downloadResult = await downloadVideosFromLinkedIn(url)
+      const downloadResult = await downloadVideosFromLinkedIn(messageText)
         .then((savedPaths) => {
           console.log("All videos downloaded successfully.");
           return savedPaths;
@@ -100,12 +106,15 @@ bot.on("message", async (msg) => {
       console.warn({ download_link: downloadResult });
       bot.sendMessage(chatId, "video download link:", downloadResult);
     } else if (messageText.includes("instagram.com")) {
-      const downloadResult = await downInstagram(url);
+      const downloadResult = await downInstagram(messageText);
       setTimeout(async () => {
         await deleteFile(downloadResult.output.videolink);
       }, 30 * 6 * 1000);
 
-      bot.sendMessage(chatId, "video download link:" + downloadResult.output);
+      bot.sendMessage(
+        chatId,
+        "http://5.161.155.227:4000/" + downloadResult.output[0].download_url
+      );
     } else {
       bot.sendMessage(chatId, "None of the specified sites");
     }

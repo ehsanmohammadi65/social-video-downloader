@@ -39,7 +39,10 @@ async function getYVideo(videoId) {
       }, []);
 
     for (const quality of listQuality) {
-      const videoFilePath = `youtube/video/${info.videoDetails.title}_${quality.quality}.mp4`;
+      const videoFilePath = `youtube/video/${
+        info.videoDetails.title.split(0 - 3) +
+        info.videoDetails.title.split(0 - 3)
+      }_${quality.quality}.mp4`;
 
       fs.mkdirSync("youtube/video", { recursive: true });
 
