@@ -5,7 +5,7 @@ const { getPostLinkInsta } = require("../instagram/index.js");
 const { deleteFile } = require("../deleteFile.js");
 const { downloadVideosFromLinkedIn } = require("../linkedin/index.js");
 //replace Robot Token
-const token = "xxxx";
+const token = "xxx";
 
 // proxy setting (if socks5 replace socks5)
 
@@ -71,7 +71,7 @@ bot.on("message", async (msg) => {
   }
 
   // create custom response
-  if (messageText != "start") {
+  if (messageText != "/start") {
     // بررسی hostname برای تشخیص سایت
     if (
       messageText.includes("youtube.com") ||
@@ -79,7 +79,6 @@ bot.on("message", async (msg) => {
     ) {
       console.log("youtube");
       const downloadResult = await downYoutube(url);
-      console.log("youtube", downloadResult);
       setTimeout(async () => {
         await deleteFile(downloadResult.videolink);
       }, 30 * 6 * 1000);
@@ -106,7 +105,7 @@ bot.on("message", async (msg) => {
         await deleteFile(downloadResult.output.videolink);
       }, 30 * 6 * 1000);
 
-      bot.sendMessage(chatId, "video download link:", downloadResult.output);
+      bot.sendMessage(chatId, "video download link:" + downloadResult.output);
     } else {
       bot.sendMessage(chatId, "None of the specified sites");
     }
