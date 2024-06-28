@@ -38,12 +38,13 @@ async function getYVideo(videoId) {
         return unique;
       }, []);
 
-    for (const quality of listQuality) {
-      const videoFilePath = `youtube/video/${
-        info.videoDetails.title.split(0 - 3) +
-        info.videoDetails.title.split(0 - 3)
-      }_${quality.quality}.mp4`;
+    let regex = /[@#.^%$!)(+_]/g;
 
+    for (const quality of listQuality) {
+      const videoFilePath = `youtube/video/${info.videoDetails.title.replace(
+        regex,
+        ""
+      )}_${quality.quality}.mp4`;
       fs.mkdirSync("youtube/video", { recursive: true });
 
       const videoStream = ytdl.downloadFromInfo(info, {

@@ -5,7 +5,7 @@ const { getPostLinkInsta } = require("../instagram/index.js");
 const { deleteFile } = require("../deleteFile.js");
 const { downloadVideosFromLinkedIn } = require("../linkedin/index.js");
 //replace Robot Token
-const token = "xxx";
+const token = "7292096747:AAGmdRBi8LvxNt0JiR31NnJMnmbmu1m-Ehs";
 
 // proxy setting (if socks5 replace socks5)
 
