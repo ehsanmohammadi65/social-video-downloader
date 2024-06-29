@@ -4,6 +4,12 @@
     <header class="bg-blue-500 text-white w-full ps-4 pe-4 pt-4 text-center">
       <h1 class="text-2xl font-bold">Social Media Video Downloader</h1>
       <p class="mt-2">
+        Telegram Robot
+        <a :href="TelegramLink" target="_blank" class="underline"
+          >Go To Telegarm</a
+        >
+      </p>
+      <p class="mt-2">
         Developed by
         <a :href="githubLink" target="_blank" class="underline"
           >Ehsan Mohammadi</a
@@ -25,6 +31,7 @@
 
   const githubLink = ref("https://github.com/ehsanmohammadi65");
   const linkedinLink = ref("https://www.linkedin.com/in/ehsan-mohammadi-pv/");
+  const TelegramLink = ref("https://t.me/svdlpro_bot");
 </script>
 
 <style scoped>
