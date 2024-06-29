@@ -38,7 +38,7 @@ async function getYVideo(videoId) {
         return unique;
       }, []);
 
-    let regex = /[@#.^%$!)(+_]/g;
+    let regex = /[@#.^%$! )(+_]/g;
 
     for (const quality of listQuality) {
       const videoFilePath = `youtube/video/${info.videoDetails.title.replace(

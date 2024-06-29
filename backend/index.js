@@ -13,13 +13,6 @@ const path = require("path");
 app.use(cors());
 app.use(bodyParser.json());
 var fs = require("fs");
-var http = require("http");
-var https = require("https");
-var privateKey = fs.readFileSync("./PrivateKey.key", "utf8");
-var certificate = fs.readFileSync("./Certificate.crt", "utf8");
-var credentials = { key: privateKey, cert: certificate };
-var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
 
 async function downYoutube(videoUrl) {
   try {
@@ -134,7 +127,11 @@ app.post("/check", async (req, res) => {
 
     const downloadResult = await downInstagram(url);
     setTimeout(async () => {
-      await deleteFile(downloadResult.output.videolink);
+      try {
+        await deleteFile(downloadResult.output.videolink);
+      } catch (error) {
+        console.log("error delete file");
+      }
     }, 30 * 6 * 1000);
 
     return res.json({ download_link: downloadResult.output });
