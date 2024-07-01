@@ -32,24 +32,27 @@
       <div class="w-full flex justify-center items-center text-center">
         <div class="w-full text-center">
           <div
-            v-if="newUrl.length > 0"
-            class="w-full text-[20px] text-red-400 items-start text-start flex justify-start">
-            <h4 class="w-full flex text-center justify-center items-center">
-              All links will be deleted after 30 minutes
-            </h4>
-          </div>
-          <div
-            class="flex justify-center items-center text-center w-full"
+            class="flex flex-col justify-center items-center text-center w-full"
             v-if="btndownload">
-            <div>
+            <div
+              v-if="newUrl.length > 0"
+              class="w-full text-[20px] text-red-400 items-start text-start flex justify-start">
+              <h4 class="w-full flex text-center justify-center items-center">
+                All links will be deleted after 30 minutes
+              </h4>
+            </div>
+            <div
+              v-for="urln in newUrl"
+              :key="urln.name"
+              class="flex flex-col justify-center items-center text-center">
               <div
-                class="button w-32 h-10 mt-5 flex justify-center text-center items-center"
-                v-for="urln in newUrl"
-                :key="urln.name">
+                class="button w-32 h-10 mt-5 flex justify-center text-center items-center">
                 <a :href="`${hostDomain}:4000/` + urln.download_url"
                   >{{ urln.name }}
                 </a>
               </div>
+              <VideoPlayer
+                :videoSrc="`${hostDomain}:4000/` + urln.download_url" />
             </div>
           </div>
         </div>
@@ -64,7 +67,8 @@
   import Loading from "vue-loading-overlay";
   import "vue-loading-overlay/dist/css/index.css";
   import axios from "axios";
-  const hostDomain = "https://svdl.pro";
+  import VideoPlayer from "../plugin/VideoPlayer.vue";
+  const hostDomain = "http://svdl.pro";
   console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");

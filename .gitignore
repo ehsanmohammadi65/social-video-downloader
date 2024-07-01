@@ -1,3 +1,4 @@
 bckend/node_modules
 social-downloader/node_modules
+social-downloader/backend/.env
 node_modules

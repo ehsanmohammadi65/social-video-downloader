@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <nav>
+  <div class="w-full flex flex-col min-h-screen">
+    <nav class="">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </nav>
-    <router-view />
+    <main class="flex-1">
+      <router-view />
+    </main>
     <FooterComp />
   </div>
 </template>
