@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col items-center p-4 relative">
-    <!-- ویدئو و کنترل‌های آن -->
+    <!-- all-->
     <div
       class="relative w-full"
       :class="{ 'max-w-lg': !isFullscreen, fullscreen: isFullscreen }">
@@ -14,7 +14,7 @@
         <source :src="videoSrc" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
-      <!-- کنترل‌های ویدئو -->
+      <!-- Video Control-->
       <div
         class="absolute bottom-0 left-0 right-0 flex flex-col items-center p-2 bg-gray-800 bg-opacity-60">
         <div class="flex flex-wrap justify-center space-x-2 mb-2">
@@ -53,7 +53,7 @@
           >
         </div>
       </div>
-      <!-- دکمه تمام صفحه -->
+      <!-- FullScreen-->
       <div class="absolute top-2 right-2">
         <button
           @click="toggleFullscreen"

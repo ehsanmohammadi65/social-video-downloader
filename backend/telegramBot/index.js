@@ -8,11 +8,10 @@ const { downloadVideosFromLinkedIn } = require("../linkedin/index.js");
 const token = "xxx";
 const path = require("path");
 const fs = require("fs");
-
-// مسیر فایل JSON برای ذخیره شناسه‌های چت
+//save cat id
 const chatIdsFilePath = path.join(__dirname, "chatIds.json");
 
-// بارگذاری شناسه‌های چت از فایل JSON
+// load chat id
 function loadChatIds() {
   if (fs.existsSync(chatIdsFilePath)) {
     const data = fs.readFileSync(chatIdsFilePath, "utf8");
@@ -21,7 +20,7 @@ function loadChatIds() {
   return new Set();
 }
 
-// ذخیره شناسه‌های چت در فایل JSON
+// save chat id
 function saveChatIds(chatIds) {
   fs.writeFileSync(
     chatIdsFilePath,
@@ -30,7 +29,6 @@ function saveChatIds(chatIds) {
   );
 }
 
-// بارگذاری شناسه‌های چت از فایل JSON
 const chatIds = loadChatIds();
 // proxy setting (if socks5 replace socks5)
 
@@ -102,7 +100,7 @@ bot.on("message", async (msg) => {
 
   // create custom response
   if (messageText != "/start") {
-    // بررسی hostname برای تشخیص سایت
+    //
     if (
       messageText.includes("youtube.com") ||
       messageText.includes("youtu.be")
@@ -198,7 +196,7 @@ bot.on("message", async (msg) => {
   }
 });
 
-// تابع برای ارسال پیام به تمام مخاطبین
+// send msg all user
 function sendMessageToAllUsers(message) {
   chatIds.forEach((chatId) => {
     bot

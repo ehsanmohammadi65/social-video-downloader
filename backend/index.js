@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 app.use(cors());
+
 app.use(bodyParser.json());
 var fs = require("fs");
 
@@ -43,7 +44,7 @@ async function downInstagram(videoUrl) {
     console.log("Error Insta", err);
   }
 }
-app.use("/youtube/video/:filename", (req, res) => {
+app.use("/api/youtube/video/:filename", (req, res) => {
   console.log("ok");
   const filename = req.params.filename;
   const filePath = path.join(__dirname + "/youtube/video/", filename);
@@ -59,12 +60,12 @@ app.use("/youtube/video/:filename", (req, res) => {
     res.download(filePath, (err) => {
       if (err) {
         console.error(`Error downloading file: ${err}`);
-        return res.status(500).send("Error downloading file");
+        return res.send("Error downloading file");
       }
     });
   });
 });
-app.use("/instagram/video/:filename", (req, res) => {
+app.use("/api/instagram/video/:filename", (req, res) => {
   console.log("ok");
   const filename = req.params.filename;
   const filePath = path.join(__dirname + "/instagram/video/", filename);
@@ -85,7 +86,7 @@ app.use("/instagram/video/:filename", (req, res) => {
     });
   });
 });
-app.use("/linkedin/video/:filename", (req, res) => {
+app.use("/api/linkedin/video/:filename", (req, res) => {
   console.log("ok");
   const filename = req.params.filename;
   const filePath = path.join(__dirname + "/linkedin/video/", filename);
@@ -107,7 +108,7 @@ app.use("/linkedin/video/:filename", (req, res) => {
   });
 });
 
-app.post("/check", async (req, res) => {
+app.post("/api/check", async (req, res) => {
   const url = req.body.url;
   if (!url) {
     return res.status(400).json({ error: "URL is required" });

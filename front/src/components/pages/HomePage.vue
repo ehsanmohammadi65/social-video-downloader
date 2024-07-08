@@ -47,12 +47,11 @@
               class="flex flex-col justify-center items-center text-center">
               <div
                 class="button w-32 h-10 mt-5 flex justify-center text-center items-center">
-                <a :href="`${hostDomain}:4000/` + urln.download_url"
+                <a :href="`${hostDomain}` + urln.download_url"
                   >{{ urln.name }}
                 </a>
               </div>
-              <VideoPlayer
-                :videoSrc="`${hostDomain}:4000/` + urln.download_url" />
+              <VideoPlayer :videoSrc="`${hostDomain}` + urln.download_url" />
             </div>
           </div>
         </div>
@@ -68,7 +67,7 @@
   import "vue-loading-overlay/dist/css/index.css";
   import axios from "axios";
   import VideoPlayer from "../plugin/VideoPlayer.vue";
-  const hostDomain = "http://svdl.pro";
+  const hostDomain = "https://svdl.pro/api/";
   console.log("hsot", hostDomain);
   let newUrl = ref("");
   let url = ref("");
@@ -79,7 +78,7 @@
     try {
       isLoading.value = true;
       const response = await axios
-        .post(`${hostDomain}:4000/check`, {
+        .post(`${hostDomain}check`, {
           url: url.value,
         })
         .then((val) => {
